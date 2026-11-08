@@ -44,8 +44,7 @@ jobs:
       matrix:
         python-version: ["3.12", "3.13"]
     env:
-      # Régression volontaire : arbre de profondeur 1 à la place du modèle de référence
-      AITG_CANDIDATE: ${{ inputs.inject_regression && '{"model": "decision_tree", "params": {"max_depth": 1}}' || '' }}
+      INJECT_REGRESSION: ${{ inputs.inject_regression || false }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -55,10 +54,15 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
       - name: Pytest (hors tests lents) avec couverture
-        run: >
-          pytest -m "not slow"
-          --cov=app --cov-report=term-missing --cov-report=xml --cov-report=html
-          --junitxml=reports/junit.xml
+        run: |
+          if [ "$INJECT_REGRESSION" = "true" ]; then
+            # Régression volontaire : arbre de profondeur 1 à la place du modèle de référence
+            echo "::warning::Régression volontaire injectée pour démontrer la détection d'un échec"
+            export AITG_CANDIDATE='{"model": "decision_tree", "params": {"max_depth": 1}}'
+          fi
+          pytest -m "not slow" \
+            --cov=app --cov-report=term-missing --cov-report=xml --cov-report=html \
+            --junitxml=reports/junit.xml
       - name: Résumé dans l'onglet Actions
         if: always()
         run: |
