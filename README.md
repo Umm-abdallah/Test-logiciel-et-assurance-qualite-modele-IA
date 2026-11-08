@@ -16,8 +16,8 @@ L'objectif n'est pas seulement d'obtenir un bon score : il s'agit de démontrer,
 | Rapport de performance et de sécurité opérationnelle | `reports/rapport_performance_securite.md` |
 | Note d'audit des biais | `reports/note_audit_biais.md` |
 | Stratégie de surveillance | `reports/plan_surveillance.md` |
-| Rapport final de qualification et question de synthèse | `reports/rapport_final_qualification.md` |
-| Preuves d'exécution (tests, couverture, échec injecté) | `reports/test_execution.txt`, `reports/test_slow_full_dataset.txt`, `reports/evidence_failure_injection.txt` |
+| Rapport final de qualification et question de synthèse | `reports/rapport_final_qualification.pdf` |
+| Preuves d'exécution (tests, couverture, échec injecté, captures GitHub Actions) | `reports/test_execution.txt`, `reports/test_slow_full_dataset.txt`, `reports/evidence_failure_injection.txt`, `reports/captures/` |
 | Workflows GitHub Actions | `.github/workflows/tests.yml`, `.github/workflows/full-evaluation.yml` |
 
 ## Architecture
@@ -109,7 +109,7 @@ git push -u origin main
 | Latence P95 du service | 13,4 ms |
 | Tests | 136 réussis, couverture 97 % |
 
-Décision : pilote en mode observation uniquement, après correction de la dépendance à la variable `Time`. Le raisonnement complet est dans `reports/rapport_final_qualification.md`.
+Décision : pilote en mode observation uniquement, après correction de la dépendance à la variable `Time`. Le raisonnement complet est dans `reports/rapport_final_qualification.pdf`.
 
 ## Limites
 

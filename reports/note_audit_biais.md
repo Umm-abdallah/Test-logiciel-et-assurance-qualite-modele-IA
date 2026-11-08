@@ -6,11 +6,11 @@ Cette note couvre la partie VII du sujet.
 
 Le jeu Kaggle ne contient aucune caractéristique des porteurs de carte : ni âge, ni sexe, ni lieu de résidence, ni nationalité. En dehors du temps et du montant, il ne propose que 28 composantes issues d'une analyse en composantes principales, dont les variables d'origine n'ont pas été publiées. Il est donc impossible, à partir de ce seul jeu, d'affirmer que le modèle traite équitablement des groupes de personnes, comme d'affirmer le contraire.
 
-Il serait tentant de chercher dans V1 à V28 un « proxy » démographique, par exemple en regroupant les transactions selon une composante pour y voir un groupe. Nous ne l'avons pas fait. Ces composantes mélangent des informations inconnues : leur attribuer un sens social reviendrait à inventer des groupes, et toute conclusion tirée de groupes inventés serait sans valeur, voire trompeuse.
+Il serait tentant de chercher dans V1 à V28 un « proxy » démographique, par exemple en regroupant les transactions selon une composante pour y voir un groupe. Je ne l'ai pas fait. Ces composantes mélangent des informations inconnues : leur attribuer un sens social reviendrait à inventer des groupes, et toute conclusion tirée de groupes inventés serait sans valeur, voire trompeuse.
 
-## 2. Ce que nous avons pu mesurer : des écarts entre segments opérationnels
+## 2. Ce que j'ai pu mesurer : des écarts entre segments opérationnels
 
-Nous avons appliqué la méthode d'audit demandée (rappel, taux de faux positifs et précision par groupe, avec leurs incertitudes) à deux découpages que les données permettent d'observer honnêtement : la tranche de montant et la période de la journée. Ces segments ne sont pas des groupes de personnes. L'exercice montre comment l'analyse se mènerait, et il révèle déjà des disparités de service.
+J'ai appliqué la méthode d'audit demandée (rappel, taux de faux positifs et précision par groupe, avec leurs incertitudes) à deux découpages que les données permettent d'observer honnêtement : la tranche de montant et la période de la journée. Ces segments ne sont pas des groupes de personnes. L'exercice montre comment l'analyse se mènerait, et il révèle déjà des disparités de service.
 
 Arbre de décision, jeu de test, intervalles de Wilson à 95 % (`segment_analysis.csv`) :
 

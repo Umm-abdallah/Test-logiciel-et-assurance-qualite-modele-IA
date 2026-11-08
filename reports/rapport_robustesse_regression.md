@@ -20,7 +20,7 @@ Le contrôle d'intégrité mérite un mot. Joblib repose sur pickle, qui peut ex
 
 ## 2. Scénarios de robustesse
 
-Pour chaque scénario du sujet, nous avons d'abord écrit le comportement attendu, puis nous l'avons confronté au comportement observé sur le jeu de test réel.
+Pour chaque scénario du sujet, j'ai d'abord écrit le comportement attendu, puis je l'ai confronté au comportement observé sur le jeu de test réel.
 
 | Scénario | Comportement attendu | Observé | Conforme |
 |---|---|---|---|
@@ -37,17 +37,17 @@ Pour chaque scénario du sujet, nous avons d'abord écrit le comportement attend
 | Colonne absente, renommée ou dupliquée, lot vide | rejet | rejet | oui |
 | Colonnes dans un autre ordre | traitement | réordonnées selon le contrat, prédictions identiques | oui |
 
-Pourquoi rejeter plutôt qu'imputer ? Dans un système de paiement, une transaction dont une variable manque n'est pas une transaction « presque normale ». Elle signale un problème en amont : capteur, flux ou format. Lui attribuer une valeur moyenne reviendrait à fabriquer un score sur une donnée inventée. Nous préférons un rejet explicite, qui laisse le circuit de repli de la banque (règles déterministes, revue manuelle) prendre le relais. Les montants hors norme sont un cas différent : ce sont des données valides, le modèle peut les scorer, mais il extrapole. Ils sont donc traités et marqués d'une alerte.
+Pourquoi rejeter plutôt qu'imputer ? Dans un système de paiement, une transaction dont une variable manque n'est pas une transaction « presque normale ». Elle signale un problème en amont : capteur, flux ou format. Lui attribuer une valeur moyenne reviendrait à fabriquer un score sur une donnée inventée. Je préfère un rejet explicite, qui laisse le circuit de repli de la banque (règles déterministes, revue manuelle) prendre le relais. Les montants hors norme sont un cas différent : ce sont des données valides, le modèle peut les scorer, mais il extrapole. Ils sont donc traités et marqués d'une alerte.
 
 Le scénario des montants extrêmes révèle une anomalie. Multiplier tous les montants par 1 000 ne change strictement rien aux décisions. Ce n'est pas une preuve de robustesse : l'arbre n'utilise tout simplement pas la variable `Amount`. Une transaction de 19 millions d'euros est jugée exactement comme une transaction de 10 €. L'alerte de domaine joue donc ici un rôle indispensable, puisque le modèle seul ne réagirait pas.
 
 ## 3. Sensibilité aux petites perturbations
 
-Les variables n'ont pas toutes la même nature, et nous ne leur avons pas appliqué le même bruit.
+Les variables n'ont pas toutes la même nature, et je ne leur ai pas appliqué le même bruit.
 
-* Pour `V1` à `V28`, composantes PCA sans unité, nous avons ajouté un bruit gaussien dont l'écart type vaut 1 %, 5 %, 10 % puis 25 % de l'écart type de chaque variable, mesuré sur l'entraînement.
-* Pour `Amount`, nous avons appliqué un facteur multiplicatif aléatoire entre 1 moins x et 1 plus x, avec x égal à 1 %, 5 % puis 20 %. Cela simule un arrondi, une conversion de devise ou des frais. Le résultat est borné à zéro.
-* Pour `Time`, nous avons appliqué un décalage de 60 secondes puis d'une heure, comme le ferait une horloge désynchronisée.
+* Pour `V1` à `V28`, composantes PCA sans unité, j'ai ajouté un bruit gaussien dont l'écart type vaut 1 %, 5 %, 10 % puis 25 % de l'écart type de chaque variable, mesuré sur l'entraînement.
+* Pour `Amount`, j'ai appliqué un facteur multiplicatif aléatoire entre 1 moins x et 1 plus x, avec x égal à 1 %, 5 % puis 20 %. Cela simule un arrondi, une conversion de devise ou des frais. Le résultat est borné à zéro.
+* Pour `Time`, j'ai appliqué un décalage de 60 secondes puis d'une heure, comme le ferait une horloge désynchronisée.
 
 Mesures sur les 56 746 transactions de test :
 
@@ -125,7 +125,7 @@ La version 1.1 est pratiquement identique à la référence. La contrainte de 20
 
 Le workflow `tests` peut être lancé manuellement avec l'option « Injecter une régression volontaire ». La variable `AITG_CANDIDATE` remplace alors le modèle de référence par un arbre de profondeur 1. En local, cette injection fait échouer les trois tests de non-régression (synthétique, échantillon réel, jeu complet) avec le détail des métriques dégradées. La trace est dans `evidence_failure_injection.txt`. Sans injection, les trois tests passent (`test_execution.txt` et `test_slow_full_dataset.txt`).
 
-Un premier essai d'injection nous a appris quelque chose. Nous avions d'abord dégradé la régression logistique en la régularisant très fortement (C = 0,00001), et aucun test n'a échoué. L'explication est mathématique : une régularisation plus forte réduit l'amplitude des coefficients sans changer leur direction, donc l'ordre des transactions reste le même, et le seuil, recalculé sur la validation, s'ajuste en conséquence. Les métriques de classement ne voient rien. La leçon pour la qualification est qu'un test de non-régression construit uniquement sur la PR-AUC et la ROC-AUC peut laisser passer une modification qui change pourtant les probabilités brutes. Si des règles métier exploitent directement la valeur du score, et pas seulement la décision, il faudra ajouter un contrôle de calibration (score de Brier, par exemple).
+Un premier essai d'injection m'a appris quelque chose. J'avais d'abord dégradé la régression logistique en la régularisant très fortement (C = 0,00001), et aucun test n'a échoué. L'explication est mathématique : une régularisation plus forte réduit l'amplitude des coefficients sans changer leur direction, donc l'ordre des transactions reste le même, et le seuil, recalculé sur la validation, s'ajuste en conséquence. Les métriques de classement ne voient rien. La leçon pour la qualification est qu'un test de non-régression construit uniquement sur la PR-AUC et la ROC-AUC peut laisser passer une modification qui change pourtant les probabilités brutes. Si des règles métier exploitent directement la valeur du score, et pas seulement la décision, il faudra ajouter un contrôle de calibration (score de Brier, par exemple).
 
 ## 7. Limites de ces tests
 

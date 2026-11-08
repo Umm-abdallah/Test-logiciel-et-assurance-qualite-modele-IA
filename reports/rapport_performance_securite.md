@@ -15,7 +15,7 @@ Ce rapport couvre la partie VIII. Les mesures viennent de `scripts/benchmark.py`
 | Débit | lots de 1, 100, 1 000, 10 000 et 56 746 transactions, 5 répétitions, médiane retenue |
 | Mémoire | mémoire résidente du processus (psutil) avant et après chargement du modèle, et maximum pendant les lots |
 
-La latence « service » n'est pas celle d'une vraie API. Elle exclut le réseau, la sérialisation HTTP, l'authentification et la file d'attente du serveur. Nous la présentons comme une borne basse de ce que verrait le système d'autorisation. Une mesure de bout en bout demanderait de déployer l'API puis d'utiliser Locust ou JMeter, ce qui dépasse le cadre du prototype.
+La latence « service » n'est pas celle d'une vraie API. Elle exclut le réseau, la sérialisation HTTP, l'authentification et la file d'attente du serveur. Je la présente comme une borne basse de ce que verrait le système d'autorisation. Une mesure de bout en bout demanderait de déployer l'API puis d'utiliser Locust ou JMeter, ce qui dépasse le cadre du prototype.
 
 ## 2. Résultats
 
@@ -46,7 +46,7 @@ Le modèle lui-même ne coûte presque rien. Un arbre de 19 feuilles parcourt au
 
 Les 461 Mo de mémoire maximale correspondent surtout au jeu de données chargé pour le banc d'essai, pas au modèle, qui n'ajoute que 0,25 Mo.
 
-Le critère de 50 ms au P95 est tenu avec une large marge. Nous l'avions fixé ainsi parce qu'une autorisation de paiement par carte doit aboutir en quelques centaines de millisecondes au total, et que le scoring de fraude n'est qu'une étape parmi d'autres (réseau, émetteur, contrôles réglementaires). Si l'on voulait descendre sous la milliseconde, il suffirait de valider les requêtes avec un schéma léger (pydantic, par exemple) et d'appeler l'arbre sur un tableau NumPy plutôt que sur un DataFrame. Rien ne l'impose aujourd'hui.
+Le critère de 50 ms au P95 est tenu avec une large marge. Je l'avais fixé ainsi parce qu'une autorisation de paiement par carte doit aboutir en quelques centaines de millisecondes au total, et que le scoring de fraude n'est qu'une étape parmi d'autres (réseau, émetteur, contrôles réglementaires). Si l'on voulait descendre sous la milliseconde, il suffirait de valider les requêtes avec un schéma léger (pydantic, par exemple) et d'appeler l'arbre sur un tableau NumPy plutôt que sur un DataFrame. Rien ne l'impose aujourd'hui.
 
 Une anomalie mineure : sur 2 000 prédictions isolées, une a pris 101 ms. Ce pic ponctuel, absent des mesures du service, vient vraisemblablement du système (ramasse-miettes, ordonnanceur de la machine virtuelle). Il justifie de suivre le P99 et le maximum en production, et pas seulement la médiane.
 

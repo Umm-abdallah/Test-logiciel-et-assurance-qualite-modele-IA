@@ -28,7 +28,7 @@ Une dérive des données n'entraîne pas forcément une baisse de performance, e
 
 La précision s'obtient vite, parce que chaque alerte est examinée par un analyste. Le rappel, lui, est lent et toujours incomplet : une fraude non signalée n'est découverte que si le client s'en aperçoit et la conteste. Le rappel mesuré en production sera donc optimiste, et il faut le présenter comme tel.
 
-## 3. Ce que la simulation nous a appris
+## 3. Ce que la simulation m'a appris
 
 ![Simulation de surveillance](figures/monitoring_simulation.png)
 
@@ -36,7 +36,7 @@ Le taux de signalement attendu, mesuré sur la validation, est de 0,162 %. Sur l
 
 Le même phénomène touche les variables : le PSI de V14 dépasse 0,7 pendant les deux nuits, sans aucune intervention. L'écart naturel entre les deux jours du jeu (11 variables au-delà de 0,20) va dans le même sens. Le seuil de 0,20 couramment cité ne convient pas tel quel à ces données. Il faudrait l'étalonner sur plusieurs semaines d'historique.
 
-Nous avons ensuite injecté une dérive artificielle dans la fenêtre de 36 h à 40 h, en déplaçant V14 de 1,5 écart type. Le PSI de V14 bondit à 3,29 et l'alerte se déclenche nettement. En revanche, ni le taux de signalement (0,14 %, dans la norme) ni le PSI des scores (0,002) ne réagissent. L'arbre ne produit que quelques valeurs de probabilité, et un déplacement de V14 qui ne fait franchir aucune frontière de feuille reste invisible en sortie. **Surveiller uniquement les scores ne suffit pas : il faut surveiller les entrées, au moins les variables les plus importantes du modèle.**
+J'ai ensuite injecté une dérive artificielle dans la fenêtre de 36 h à 40 h, en déplaçant V14 de 1,5 écart type. Le PSI de V14 bondit à 3,29 et l'alerte se déclenche nettement. En revanche, ni le taux de signalement (0,14 %, dans la norme) ni le PSI des scores (0,002) ne réagissent. L'arbre ne produit que quelques valeurs de probabilité, et un déplacement de V14 qui ne fait franchir aucune frontière de feuille reste invisible en sortie. **Surveiller uniquement les scores ne suffit pas : il faut surveiller les entrées, au moins les variables les plus importantes du modèle.**
 
 ## 4. Que faire quand une alerte se déclenche
 
