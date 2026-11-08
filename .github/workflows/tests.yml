@@ -1,0 +1,83 @@
+name: tests
+
+# Tests rapides : à chaque push et à chaque Pull Request.
+# Le déclenchement manuel permet d'injecter une régression volontaire
+# afin de prouver que la CI échoue et le signale correctement.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      inject_regression:
+        description: "Injecter une régression volontaire (démonstration d'échec)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff==0.16.9
+      - name: Ruff (règles)
+        run: ruff check . --output-format=github
+      - name: Ruff (format)
+        run: ruff format --check .
+
+  tests:
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+    env:
+      # Régression volontaire : arbre de profondeur 1 à la place du modèle de référence
+      AITG_CANDIDATE: ${{ inputs.inject_regression && '{"model": "decision_tree", "params": {"max_depth": 1}}' || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+      - name: Pytest (hors tests lents) avec couverture
+        run: >
+          pytest -m "not slow"
+          --cov=app --cov-report=term-missing --cov-report=xml --cov-report=html
+          --junitxml=reports/junit.xml
+      - name: Résumé dans l'onglet Actions
+        if: always()
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import xml.etree.ElementTree as ET, os
+          p = "reports/junit.xml"
+          if os.path.exists(p):
+              s = ET.parse(p).getroot()
+              s = s if s.tag == "testsuite" else s.find("testsuite")
+              print(f"### Tests Python ${{ matrix.python-version }}")
+              print(f"| total | échecs | erreurs | ignorés |\n|---|---|---|---|")
+              print(f"| {s.get('tests')} | {s.get('failures')} | {s.get('errors')} | {s.get('skipped')} |")
+          PY
+      - name: Archiver les preuves (JUnit, couverture)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-py${{ matrix.python-version }}
+          path: |
+            reports/junit.xml
+            coverage.xml
+            htmlcov/

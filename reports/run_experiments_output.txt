@@ -1,0 +1,22 @@
+Données : {'train': {'n': 170235, 'n_fraud': 284, 'fraud_rate': 0.0016682820806532147}, 'validation': {'n': 56745, 'n_fraud': 94, 'fraud_rate': 0.0016565336152965019}, 'test': {'n': 56746, 'n_fraud': 95, 'fraud_rate': 0.0016741268107003137}}
+logistic_regression: {'C': 1.0, 'class_weight': None} PR-AUC val=0.7983 seuil=0.0995
+decision_tree: {'max_depth': 6, 'min_samples_leaf': 20, 'class_weight': None} PR-AUC val=0.8334 seuil=0.3000
+                                Régression logistique                                               Arbre de décision
+Hyperparamètres      {'C': 1.0, 'class_weight': None}  {'max_depth': 6, 'min_samples_leaf': 20, 'class_weight': None}
+Seuil (validation)                             0.0995                                                             0.3
+pr_auc test                                   0.69777                                                        0.724221
+roc_auc test                                 0.948681                                                        0.938769
+precision test                               0.843373                                                        0.851852
+recall test                                  0.736842                                                        0.726316
+f1 test                                      0.786517                                                        0.784091
+fpr test                                     0.000229                                                        0.000212
+fnr test                                     0.263158                                                        0.273684
+accuracy test                                 0.99933                                                         0.99933
+TP                                                 70                                                              69
+FP                                                 13                                                              12
+FN                                                 25                                                              26
+TN                                              56638                                                           56639
+PR-AUC entraînement                          0.749776                                                         0.82521
+PR-AUC validation                            0.798314                                                        0.833439
+Critères acceptés                               False                                                           False
+Hors temps : {'pr_auc': 0.6988150185711313, 'roc_auc': 0.8993070127580998, 'precision': 0.7432432432432432, 'recall': 0.7432432432432432, 'f1': 0.7432432432432432, 'fpr': 0.00033526256352343307, 'fnr': 0.25675675675675674, 'accuracy': 0.9993303492757198, 'tp': 55, 'fp': 19, 'fn': 19, 'tn': 56653}

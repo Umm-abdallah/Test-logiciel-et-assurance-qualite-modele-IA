@@ -1,0 +1,227 @@
+{
+  "v1.1 arbre profondeur 8": {
+    "model": "decision_tree",
+    "params": {
+      "max_depth": 8,
+      "min_samples_leaf": 20,
+      "class_weight": null
+    },
+    "threshold": {
+      "threshold": 0.3,
+      "val_precision": 0.8695652173913043,
+      "val_recall": 0.851063829787234,
+      "val_fpr": 0.00021182326878607614,
+      "min_recall_target": 0.8,
+      "max_fpr_target": 0.001,
+      "constraint_met": true
+    },
+    "comparison": {
+      "decision": "accepter",
+      "details": {
+        "pr_auc": {
+          "baseline": 0.8334386871765342,
+          "candidate": 0.8317723162963869,
+          "degradation": 0.0016663708801473165,
+          "tolerance": 0.02,
+          "status": "ok"
+        },
+        "roc_auc": {
+          "baseline": 0.9530990795828284,
+          "candidate": 0.9531183277078731,
+          "degradation": -1.9248125044724063e-05,
+          "tolerance": 0.01,
+          "status": "ok"
+        },
+        "recall": {
+          "baseline": 0.851063829787234,
+          "candidate": 0.851063829787234,
+          "degradation": 0.0,
+          "tolerance": 0.05,
+          "status": "ok"
+        },
+        "precision": {
+          "baseline": 0.8695652173913043,
+          "candidate": 0.8695652173913043,
+          "degradation": 0.0,
+          "tolerance": 0.05,
+          "status": "ok"
+        },
+        "fpr": {
+          "baseline": 0.00021182326878607614,
+          "candidate": 0.00021182326878607614,
+          "degradation": 0.0,
+          "tolerance": 0.0005,
+          "status": "ok"
+        }
+      }
+    }
+  },
+  "v1.2 arbre pondéré (class_weight balanced)": {
+    "model": "decision_tree",
+    "params": {
+      "max_depth": 6,
+      "min_samples_leaf": 20,
+      "class_weight": "balanced"
+    },
+    "threshold": {
+      "threshold": 0.9990042140432414,
+      "val_precision": 0.5793650793650794,
+      "val_recall": 0.776595744680851,
+      "val_fpr": 0.0009355527704718364,
+      "min_recall_target": 0.8,
+      "max_fpr_target": 0.001,
+      "constraint_met": false
+    },
+    "comparison": {
+      "decision": "rejeter",
+      "details": {
+        "pr_auc": {
+          "baseline": 0.8334386871765342,
+          "candidate": 0.46582043908378634,
+          "degradation": 0.3676182480927479,
+          "tolerance": 0.02,
+          "status": "rejeter"
+        },
+        "roc_auc": {
+          "baseline": 0.9530990795828284,
+          "candidate": 0.9417840927485458,
+          "degradation": 0.011314986834282559,
+          "tolerance": 0.01,
+          "status": "rejeter"
+        },
+        "recall": {
+          "baseline": 0.851063829787234,
+          "candidate": 0.776595744680851,
+          "degradation": 0.07446808510638303,
+          "tolerance": 0.05,
+          "status": "rejeter"
+        },
+        "precision": {
+          "baseline": 0.8695652173913043,
+          "candidate": 0.5793650793650794,
+          "degradation": 0.2902001380262249,
+          "tolerance": 0.05,
+          "status": "rejeter"
+        },
+        "fpr": {
+          "baseline": 0.00021182326878607614,
+          "candidate": 0.0009355527704718364,
+          "degradation": 0.0007237295016857602,
+          "tolerance": 0.0005,
+          "status": "rejeter"
+        }
+      }
+    }
+  },
+  "v1.3 régression logistique C=1": {
+    "model": "logistic_regression",
+    "params": {
+      "C": 1.0,
+      "class_weight": null
+    },
+    "threshold": {
+      "threshold": 0.09949674195148062,
+      "val_precision": 0.7755102040816326,
+      "val_recall": 0.8085106382978723,
+      "val_fpr": 0.0003883426594411396,
+      "min_recall_target": 0.8,
+      "max_fpr_target": 0.001,
+      "constraint_met": true
+    },
+    "comparison": {
+      "decision": "rejeter",
+      "details": {
+        "pr_auc": {
+          "baseline": 0.8334386871765342,
+          "candidate": 0.7983139002140439,
+          "degradation": 0.03512478696249033,
+          "tolerance": 0.02,
+          "status": "rejeter"
+        },
+        "roc_auc": {
+          "baseline": 0.9530990795828284,
+          "candidate": 0.9748433578194522,
+          "degradation": -0.021744278236623837,
+          "tolerance": 0.01,
+          "status": "ok"
+        },
+        "recall": {
+          "baseline": 0.851063829787234,
+          "candidate": 0.8085106382978723,
+          "degradation": 0.042553191489361764,
+          "tolerance": 0.05,
+          "status": "investiguer"
+        },
+        "precision": {
+          "baseline": 0.8695652173913043,
+          "candidate": 0.7755102040816326,
+          "degradation": 0.0940550133096717,
+          "tolerance": 0.05,
+          "status": "rejeter"
+        },
+        "fpr": {
+          "baseline": 0.00021182326878607614,
+          "candidate": 0.0003883426594411396,
+          "degradation": 0.00017651939065506348,
+          "tolerance": 0.0005,
+          "status": "ok"
+        }
+      }
+    }
+  },
+  "v1.4 arbre profondeur 1 (régression injectée)": {
+    "model": "decision_tree",
+    "params": {
+      "max_depth": 1
+    },
+    "threshold": {
+      "threshold": 0.7406015037593985,
+      "val_precision": 0.7790697674418605,
+      "val_recall": 0.7127659574468085,
+      "val_fpr": 0.0003353868422446206,
+      "min_recall_target": 0.8,
+      "max_fpr_target": 0.001,
+      "constraint_met": false
+    },
+    "comparison": {
+      "decision": "rejeter",
+      "details": {
+        "pr_auc": {
+          "baseline": 0.8334386871765342,
+          "candidate": 0.555770221555507,
+          "degradation": 0.2776684656210272,
+          "tolerance": 0.02,
+          "status": "rejeter"
+        },
+        "roc_auc": {
+          "baseline": 0.9530990795828284,
+          "candidate": 0.8562152853022819,
+          "degradation": 0.0968837942805465,
+          "tolerance": 0.01,
+          "status": "rejeter"
+        },
+        "recall": {
+          "baseline": 0.851063829787234,
+          "candidate": 0.7127659574468085,
+          "degradation": 0.13829787234042556,
+          "tolerance": 0.05,
+          "status": "rejeter"
+        },
+        "precision": {
+          "baseline": 0.8695652173913043,
+          "candidate": 0.7790697674418605,
+          "degradation": 0.0904954499494438,
+          "tolerance": 0.05,
+          "status": "rejeter"
+        },
+        "fpr": {
+          "baseline": 0.00021182326878607614,
+          "candidate": 0.0003353868422446206,
+          "degradation": 0.00012356357345854444,
+          "tolerance": 0.0005,
+          "status": "ok"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+name: full-evaluation
+
+# Expériences coûteuses : entraînement complet sur le jeu Kaggle, tests lents,
+# robustesse et benchmark. Déclenchement manuel ou hebdomadaire.
+# Les identifiants Kaggle sont stockés dans les secrets du dépôt
+# (Settings > Secrets and variables > Actions), jamais dans le code.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt kaggle
+      - name: Télécharger le jeu de données
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: |
+          kaggle datasets download -d mlg-ulb/creditcardfraud -p data --unzip
+          test -f data/creditcard.csv
+      - name: Tests lents (non-régression sur le jeu complet)
+        run: pytest -m slow -v
+      - name: Expériences, robustesse, benchmark
+        run: |
+          python scripts/run_experiments.py
+          python scripts/run_robustness.py
+          python scripts/benchmark.py
+          python scripts/monitoring_simulation.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-evaluation-reports
+          path: reports/

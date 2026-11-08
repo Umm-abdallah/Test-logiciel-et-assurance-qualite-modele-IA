@@ -1,0 +1,18 @@
+scenario,attendu,observé,conforme,détail
+"Valeurs manquantes (1 variable, 50 lignes sur 1000)",rejet du lot,rejeté (1 anomalie(s)),True,Valeurs manquantes : {'V14': 50}
+"Valeurs manquantes (3 variables, 50 lignes sur 1000)",rejet du lot,rejeté (1 anomalie(s)),True,"Valeurs manquantes : {'V1': 50, 'V4': 50, 'Amount': 50}"
+Valeurs infinies (5 lignes),rejet,rejeté (1 anomalie(s)),True,
+"Valeur non numérique (Amount = '12,50')",rejet,rejeté (1 anomalie(s)),True,
+Champ manquant (API),rejet,rejected,True,Colonnes manquantes : ['V7']
+Champ supplémentaire (API),rejet,rejected,True,Colonnes non prévues par le contrat : ['merchant']
+Type booléen (API),rejet,rejected,True,Types non numériques : ['Amount']
+Amount = 2 x max entraînement (39 313),traitement + alerte,"traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)",True,variation moyenne de probabilité 0.0000
+Amount = 10 x max entraînement (196 565),traitement + alerte,"traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)",True,variation moyenne de probabilité 0.0000
+Amount = 1000 x max entraînement (19 656 530),traitement + alerte,"traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)",True,variation moyenne de probabilité 0.0000
+"Dérive simulée (+0,5 sigma sur V10, V12, V14)","alerte de dérive (PSI > 0,20)","alerte sur ['V10', 'V14', 'V12']",True,"rappel -0.032, précision +0.040, FPR -0.00007"
+Dérive naturelle jour 1 vs jour 2 (Time < 86 400 s),surveillance (PSI),"11 variables en alerte ; V1 PSI=1.57, V3 PSI=1.43, V28 PSI=1.05",True,Time exclu : sa dérive est structurelle (compteur croissant)
+Colonne absente (V20),rejet,rejeté (1 anomalie(s)),True,
+Colonne renommée (amount),rejet,rejeté (1 anomalie(s)),True,
+Colonne dupliquée (V1),rejet,rejeté (1 anomalie(s)),True,
+Lot vide,rejet,rejeté (1 anomalie(s)),True,
+Colonnes dans un ordre différent,traitement (réordonnancement),traité,True,

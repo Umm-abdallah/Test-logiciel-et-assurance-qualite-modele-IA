@@ -1,0 +1,182 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: .
+configfile: pyproject.toml
+plugins: platformdirs-4.13.5, anyio-4.15.1, hypothesis-6.170.15, cov-7.1.0
+collecting ... collected 9 items
+
+tests/test_regression.py::test_t06_same_seed_same_results PASSED         [ 11%]
+tests/test_regression.py::test_compare_accepts_identical PASSED          [ 22%]
+tests/test_regression.py::test_compare_rejects_degradation_beyond_tolerance PASSED [ 33%]
+tests/test_regression.py::test_compare_rejects_fpr_increase PASSED       [ 44%]
+tests/test_regression.py::test_compare_investigates_grey_zone PASSED     [ 55%]
+tests/test_regression.py::test_compare_investigates_suspicious_improvement PASSED [ 66%]
+tests/test_regression.py::test_no_regression_synthetic FAILED            [ 77%]
+tests/test_regression.py::test_no_regression_real_sample FAILED          [ 88%]
+tests/test_regression.py::test_no_regression_full_dataset FAILED         [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_no_regression_synthetic _________________________
+
+    def test_no_regression_synthetic():
+        baseline = _load(BASELINE_DIR / "synthetic_baseline.json")
+        cand = run_reference(make_synthetic(), *_candidate(baseline))
+>       _assert_no_regression(baseline, cand)
+
+tests/test_regression.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+baseline = {'created_utc': '2026-11-08T16:11:22+00:00', 'code_version': '1.0.0', 'git_commit': 'non versionné', 'model': 'decision_tree', ...}
+candidate = {'created_utc': '2026-11-08T16:17:46+00:00', 'code_version': '1.0.0', 'git_commit': 'non versionné', 'model': 'decision_tree', ...}
+
+    def _assert_no_regression(baseline: dict, candidate: dict) -> None:
+        assert candidate["dataset"]["fingerprint"] == baseline["dataset"]["fingerprint"], (
+            "Le jeu de validation a changé : la comparaison n'est pas valide"
+        )
+        res = compare_to_baseline(candidate["validation_metrics"], baseline["validation_metrics"])
+        rejected = {k: v for k, v in res["details"].items() if v["status"] == "rejeter"}
+>       assert res["decision"] != "rejeter", f"Régression détectée : {json.dumps(rejected, indent=2)}"
+E       AssertionError: Régression détectée : {
+E           "pr_auc": {
+E             "baseline": 0.445376554878695,
+E             "candidate": 0.2111,
+E             "degradation": 0.23427655487869498,
+E             "tolerance": 0.02,
+E             "status": "rejeter"
+E           },
+E           "roc_auc": {
+E             "baseline": 0.855716129032258,
+E             "candidate": 0.7109677419354838,
+E             "degradation": 0.14474838709677418,
+E             "tolerance": 0.01,
+E             "status": "rejeter"
+E           },
+E           "recall": {
+E             "baseline": 0.64,
+E             "candidate": 0.44,
+E             "degradation": 0.2,
+E             "tolerance": 0.05,
+E             "status": "rejeter"
+E           },
+E           "precision": {
+E             "baseline": 0.5925925925925926,
+E             "candidate": 0.44,
+E             "degradation": 0.15259259259259256,
+E             "tolerance": 0.05,
+E             "status": "rejeter"
+E           },
+E           "fpr": {
+E             "baseline": 0.014193548387096775,
+E             "candidate": 0.01806451612903226,
+E             "degradation": 0.0038709677419354847,
+E             "tolerance": 0.0005,
+E             "status": "rejeter"
+E           }
+E         }
+E       assert 'rejeter' != 'rejeter'
+
+tests/test_regression.py:58: AssertionError
+________________________ test_no_regression_real_sample ________________________
+
+    def test_no_regression_real_sample():
+        if not SAMPLE_DATA_PATH.exists():
+            pytest.skip("Échantillon réel absent")
+        baseline = _load(BASELINE_DIR / "sample_baseline.json")
+        cand = run_reference(load_data(SAMPLE_DATA_PATH), *_candidate(baseline))
+>       _assert_no_regression(baseline, cand)
+
+tests/test_regression.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+baseline = {'created_utc': '2026-11-08T16:11:24+00:00', 'code_version': '1.0.0', 'git_commit': 'non versionné', 'model': 'decision_tree', ...}
+candidate = {'created_utc': '2026-11-08T16:17:46+00:00', 'code_version': '1.0.0', 'git_commit': 'non versionné', 'model': 'decision_tree', ...}
+
+    def _assert_no_regression(baseline: dict, candidate: dict) -> None:
+        assert candidate["dataset"]["fingerprint"] == baseline["dataset"]["fingerprint"], (
+            "Le jeu de validation a changé : la comparaison n'est pas valide"
+        )
+        res = compare_to_baseline(candidate["validation_metrics"], baseline["validation_metrics"])
+        rejected = {k: v for k, v in res["details"].items() if v["status"] == "rejeter"}
+>       assert res["decision"] != "rejeter", f"Régression détectée : {json.dumps(rejected, indent=2)}"
+E       AssertionError: Régression détectée : {
+E           "pr_auc": {
+E             "baseline": 0.880125,
+E             "candidate": 0.853,
+E             "degradation": 0.027125000000000066,
+E             "tolerance": 0.02,
+E             "status": "rejeter"
+E           },
+E           "roc_auc": {
+E             "baseline": 0.9479336734693877,
+E             "candidate": 0.925,
+E             "degradation": 0.022933673469387683,
+E             "tolerance": 0.01,
+E             "status": "rejeter"
+E           }
+E         }
+E       assert 'rejeter' != 'rejeter'
+
+tests/test_regression.py:58: AssertionError
+_______________________ test_no_regression_full_dataset ________________________
+
+    @pytest.mark.slow
+    def test_no_regression_full_dataset():
+        if not DEFAULT_DATA_PATH.exists():
+            pytest.skip("Jeu Kaggle complet absent (data/creditcard.csv)")
+        baseline = _load(REPORTS_DIR / "baseline.json")
+        cand = run_reference(load_data(DEFAULT_DATA_PATH), *_candidate(baseline))
+>       _assert_no_regression(baseline, cand)
+
+tests/test_regression.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+baseline = {'created_utc': '2026-11-08T16:11:32+00:00', 'code_version': '1.0.0', 'git_commit': 'non versionné', 'model': 'decision_tree', ...}
+candidate = {'created_utc': '2026-11-08T16:17:50+00:00', 'code_version': '1.0.0', 'git_commit': 'non versionné', 'model': 'decision_tree', ...}
+
+    def _assert_no_regression(baseline: dict, candidate: dict) -> None:
+        assert candidate["dataset"]["fingerprint"] == baseline["dataset"]["fingerprint"], (
+            "Le jeu de validation a changé : la comparaison n'est pas valide"
+        )
+        res = compare_to_baseline(candidate["validation_metrics"], baseline["validation_metrics"])
+        rejected = {k: v for k, v in res["details"].items() if v["status"] == "rejeter"}
+>       assert res["decision"] != "rejeter", f"Régression détectée : {json.dumps(rejected, indent=2)}"
+E       AssertionError: Régression détectée : {
+E           "pr_auc": {
+E             "baseline": 0.8334386871765342,
+E             "candidate": 0.555770221555507,
+E             "degradation": 0.2776684656210272,
+E             "tolerance": 0.02,
+E             "status": "rejeter"
+E           },
+E           "roc_auc": {
+E             "baseline": 0.9530990795828284,
+E             "candidate": 0.8562152853022819,
+E             "degradation": 0.0968837942805465,
+E             "tolerance": 0.01,
+E             "status": "rejeter"
+E           },
+E           "recall": {
+E             "baseline": 0.851063829787234,
+E             "candidate": 0.7127659574468085,
+E             "degradation": 0.13829787234042556,
+E             "tolerance": 0.05,
+E             "status": "rejeter"
+E           },
+E           "precision": {
+E             "baseline": 0.8695652173913043,
+E             "candidate": 0.7790697674418605,
+E             "degradation": 0.0904954499494438,
+E             "tolerance": 0.05,
+E             "status": "rejeter"
+E           }
+E         }
+E       assert 'rejeter' != 'rejeter'
+
+tests/test_regression.py:58: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_regression.py::test_no_regression_synthetic - AssertionErro...
+FAILED tests/test_regression.py::test_no_regression_real_sample - AssertionEr...
+FAILED tests/test_regression.py::test_no_regression_full_dataset - AssertionE...
+========================= 3 failed, 6 passed in 3.93s ==========================

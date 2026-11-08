@@ -1,0 +1,14 @@
+Taux de signalement attendu : 0.1621%
+    fenetre  debut_h     n  n_fraudes  taux_signalement alerte_signalement  psi_scores statut_psi_scores  psi_V14 statut_psi_V14  part_hors_domaine  rappel_differe  precision_differee  fpr_differe
+0         0        0  1955          9            0.0051             alerte      0.0001            stable   0.8202         alerte             0.0000          1.0000              0.9000       0.0005
+1         1        4  1647          4            0.0012             normal      0.0010            stable   0.8020         alerte             0.0000          0.5000              1.0000       0.0000
+2         2        8  5859         12            0.0020             normal      0.0008            stable   0.1252   surveillance             0.0002          0.9167              0.9167       0.0002
+3         3       12  6250         11            0.0010             normal      0.0008            stable   0.0859         stable             0.0000          0.3636              0.6667       0.0003
+4         4       16  6496         12            0.0011             normal      0.0001            stable   0.0872         stable             0.0000          0.5833              1.0000       0.0000
+5         5       20  6790          8            0.0013             normal      0.0000            stable   0.0988         stable             0.0001          0.8750              0.7778       0.0003
+6         6       24  1880         13            0.0059             alerte      0.0007            stable   0.7305         alerte             0.0005          0.7692              0.9091       0.0005
+7         7       28  1761          6            0.0028             normal      0.0048            stable   0.7870         alerte             0.0000          0.8333              1.0000       0.0000
+8         8       32  5853          2            0.0007             normal      0.0003            stable   0.0486         stable             0.0002          1.0000              0.5000       0.0003
+9         9       36  6493          8            0.0014             normal      0.0024            stable   3.2897         alerte             0.0003          0.8750              0.7778       0.0003
+10       10       40  6494          9            0.0008             normal      0.0048            stable   0.0416         stable             0.0000          0.5556              1.0000       0.0000
+11       11       44  5268          1            0.0006             normal      0.0007            stable   0.0287         stable             0.0004          0.0000              0.0000       0.0006

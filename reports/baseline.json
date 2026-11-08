@@ -1,0 +1,54 @@
+{
+  "created_utc": "2026-11-08T16:11:32+00:00",
+  "code_version": "1.0.0",
+  "git_commit": "non versionné",
+  "model": "decision_tree",
+  "params": {
+    "max_depth": 6,
+    "min_samples_leaf": 20,
+    "class_weight": null
+  },
+  "random_state": 42,
+  "threshold": {
+    "threshold": 0.3,
+    "val_precision": 0.8695652173913043,
+    "val_recall": 0.851063829787234,
+    "val_fpr": 0.00021182326878607614,
+    "min_recall_target": 0.8,
+    "max_fpr_target": 0.001,
+    "constraint_met": true
+  },
+  "environment": {
+    "python": "3.13.18",
+    "sklearn": "1.9.1",
+    "pandas": "3.0.5",
+    "numpy": "2.5.3",
+    "joblib": "1.6.0",
+    "platform": "Linux-6.18.44-fc-v310-x86_64-with-glibc2.39"
+  },
+  "dataset": {
+    "fingerprint": "d175ada8f30a3ddfcb3ee740c245ecf9e904b05484f300b19cae9d30d6449f62",
+    "n_rows_after_dedup": 283726,
+    "n_duplicates_removed": 1081,
+    "n_fraud": 473,
+    "fraud_rate": 0.001667101358352777,
+    "n_validation": 56745,
+    "n_fraud_validation": 94
+  },
+  "validation_metrics": {
+    "n": 56745,
+    "n_positive": 94,
+    "tp": 80,
+    "tn": 56639,
+    "fp": 12,
+    "fn": 14,
+    "accuracy": 0.9995418098510882,
+    "precision": 0.8695652173913043,
+    "recall": 0.851063829787234,
+    "f1": 0.8602150537634409,
+    "fpr": 0.00021182326878607614,
+    "fnr": 0.14893617021276595,
+    "roc_auc": 0.9530990795828284,
+    "pr_auc": 0.8334386871765342
+  }
+}

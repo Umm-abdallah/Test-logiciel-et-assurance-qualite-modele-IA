@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: .
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.13.5, anyio-4.15.1, hypothesis-6.170.15, cov-7.1.0
+collecting ... collected 136 items / 135 deselected / 1 selected
+
+tests/test_regression.py::test_no_regression_full_dataset PASSED         [100%]
+
+====================== 1 passed, 135 deselected in 6.99s =======================

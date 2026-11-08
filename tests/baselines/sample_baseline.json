@@ -1,0 +1,54 @@
+{
+  "created_utc": "2026-11-08T16:11:24+00:00",
+  "code_version": "1.0.0",
+  "git_commit": "non versionné",
+  "model": "decision_tree",
+  "params": {
+    "max_depth": 6,
+    "min_samples_leaf": 20,
+    "class_weight": null
+  },
+  "random_state": 42,
+  "threshold": {
+    "threshold": 0.8,
+    "val_precision": 1.0,
+    "val_recall": 0.85,
+    "val_fpr": 0.0,
+    "min_recall_target": 0.8,
+    "max_fpr_target": 0.001,
+    "constraint_met": true
+  },
+  "environment": {
+    "python": "3.13.18",
+    "sklearn": "1.9.1",
+    "pandas": "3.0.5",
+    "numpy": "2.5.3",
+    "joblib": "1.6.0",
+    "platform": "Linux-6.18.44-fc-v310-x86_64-with-glibc2.39"
+  },
+  "dataset": {
+    "fingerprint": "48a107670e51ecee940a32b7b3e8c118cbe4f16d1356a89f0be4a441f679c4dd",
+    "n_rows_after_dedup": 5000,
+    "n_duplicates_removed": 0,
+    "n_fraud": 100,
+    "fraud_rate": 0.02,
+    "n_validation": 1000,
+    "n_fraud_validation": 20
+  },
+  "validation_metrics": {
+    "n": 1000,
+    "n_positive": 20,
+    "tp": 17,
+    "tn": 980,
+    "fp": 0,
+    "fn": 3,
+    "accuracy": 0.997,
+    "precision": 1.0,
+    "recall": 0.85,
+    "f1": 0.918918918918919,
+    "fpr": 0.0,
+    "fnr": 0.15,
+    "roc_auc": 0.9479336734693877,
+    "pr_auc": 0.880125
+  }
+}

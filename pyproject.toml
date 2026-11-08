@@ -1,0 +1,32 @@
+[project]
+name = "ai-testguard"
+version = "1.0.0"
+description = "Qualification d'un modèle de détection de fraude bancaire"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "slow: tests sur le jeu Kaggle complet (exécution manuelle ou planifiée)",
+]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/experiment.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 85
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "S"]
+ignore = ["S101", "S603", "S607", "B008", "N803", "N806"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S", "B017"]

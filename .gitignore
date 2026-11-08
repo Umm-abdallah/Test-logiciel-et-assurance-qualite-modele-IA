@@ -1,0 +1,23 @@
+# Données (licence Kaggle, taille) : seul l'échantillon est versionné
+data/creditcard.csv
+*.zip
+# Modèles entraînés (artefacts régénérables)
+models/
+*.joblib
+*.joblib.sha256
+# Secrets
+.env
+kaggle.json
+*.pem
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.ipynb_checkpoints/
+.hypothesis/

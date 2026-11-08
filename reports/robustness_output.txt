@@ -1,0 +1,33 @@
+request=n/a status=rejected n_issues=1
+request=n/a status=rejected n_issues=1
+request=n/a status=rejected n_issues=1
+Colonnes non prévues par le contrat : ['amount'] (ignorées)
+                                                scenario                                                            observé  conforme
+0    Valeurs manquantes (1 variable, 50 lignes sur 1000)                                             rejeté (1 anomalie(s))      True
+1   Valeurs manquantes (3 variables, 50 lignes sur 1000)                                             rejeté (1 anomalie(s))      True
+2                            Valeurs infinies (5 lignes)                                             rejeté (1 anomalie(s))      True
+3                Valeur non numérique (Amount = '12,50')                                             rejeté (1 anomalie(s))      True
+4                                   Champ manquant (API)                                                           rejected      True
+5                             Champ supplémentaire (API)                                                           rejected      True
+6                                     Type booléen (API)                                                           rejected      True
+7                 Amount = 2 x max entraînement (39 313)  traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)      True
+8               Amount = 10 x max entraînement (196 565)  traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)      True
+9          Amount = 1000 x max entraînement (19 656 530)  traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)      True
+10         Dérive simulée (+0,5 sigma sur V10, V12, V14)                                   alerte sur ['V10', 'V14', 'V12']      True
+11   Dérive naturelle jour 1 vs jour 2 (Time < 86 400 s)    11 variables en alerte ; V1 PSI=1.57, V3 PSI=1.43, V28 PSI=1.05      True
+12                                 Colonne absente (V20)                                             rejeté (1 anomalie(s))      True
+13                             Colonne renommée (amount)                                             rejeté (1 anomalie(s))      True
+14                                Colonne dupliquée (V1)                                             rejeté (1 anomalie(s))      True
+15                                              Lot vide                                             rejeté (1 anomalie(s))      True
+16                      Colonnes dans un ordre différent                                                             traité      True
+                                           perturbation  mean_abs_dproba  p95_abs_dproba  max_abs_dproba  flip_rate  n_flips  n_flips_fraud  n_invalid  delta_recall  delta_precision  delta_fpr
+0   Bruit gaussien V1 à V28, sigma = 1% de l'écart type           0.0000             0.0          0.1480     0.0000        0              0          0        0.0000           0.0000     0.0000
+1   Bruit gaussien V1 à V28, sigma = 5% de l'écart type           0.0001             0.0          0.9000     0.0001        3              1          0       -0.0105          -0.0226     0.0000
+2  Bruit gaussien V1 à V28, sigma = 10% de l'écart type           0.0001             0.0          0.9000     0.0001        4              1          0       -0.0105          -0.0326     0.0001
+3  Bruit gaussien V1 à V28, sigma = 25% de l'écart type           0.0002             0.0          0.9980     0.0001        5              2          0        0.0000          -0.0304     0.0001
+4                        Amount multiplié par U(1 ± 1%)           0.0000             0.0          0.0000     0.0000        0              0          0        0.0000           0.0000     0.0000
+5                        Amount multiplié par U(1 ± 5%)           0.0000             0.0          0.0000     0.0000        0              0          0        0.0000           0.0000     0.0000
+6                       Amount multiplié par U(1 ± 20%)           0.0000             0.0          0.0000     0.0000        0              0          0        0.0000           0.0000     0.0000
+7                                  Time décalé de +60 s           0.0000             0.0          0.0000     0.0000        0              0          0        0.0000           0.0000     0.0000
+8                                Time décalé de +3600 s           0.0000             0.0          0.8500     0.0000        1              0          0        0.0000          -0.0104     0.0000
+9         Décalage de +0,5 écart type sur V10, V12, V14           0.0001             0.0          0.8485     0.0001        7              3          0       -0.0316           0.0400    -0.0001

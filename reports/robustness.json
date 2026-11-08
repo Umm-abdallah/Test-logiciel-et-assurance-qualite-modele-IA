@@ -1,0 +1,255 @@
+{
+  "scenarios": [
+    {
+      "scenario": "Valeurs manquantes (1 variable, 50 lignes sur 1000)",
+      "attendu": "rejet du lot",
+      "observé": "rejeté (1 anomalie(s))",
+      "conforme": true,
+      "détail": "Valeurs manquantes : {'V14': 50}"
+    },
+    {
+      "scenario": "Valeurs manquantes (3 variables, 50 lignes sur 1000)",
+      "attendu": "rejet du lot",
+      "observé": "rejeté (1 anomalie(s))",
+      "conforme": true,
+      "détail": "Valeurs manquantes : {'V1': 50, 'V4': 50, 'Amount': 50}"
+    },
+    {
+      "scenario": "Valeurs infinies (5 lignes)",
+      "attendu": "rejet",
+      "observé": "rejeté (1 anomalie(s))",
+      "conforme": true,
+      "détail": ""
+    },
+    {
+      "scenario": "Valeur non numérique (Amount = '12,50')",
+      "attendu": "rejet",
+      "observé": "rejeté (1 anomalie(s))",
+      "conforme": true,
+      "détail": ""
+    },
+    {
+      "scenario": "Champ manquant (API)",
+      "attendu": "rejet",
+      "observé": "rejected",
+      "conforme": true,
+      "détail": "Colonnes manquantes : ['V7']"
+    },
+    {
+      "scenario": "Champ supplémentaire (API)",
+      "attendu": "rejet",
+      "observé": "rejected",
+      "conforme": true,
+      "détail": "Colonnes non prévues par le contrat : ['merchant']"
+    },
+    {
+      "scenario": "Type booléen (API)",
+      "attendu": "rejet",
+      "observé": "rejected",
+      "conforme": true,
+      "détail": "Types non numériques : ['Amount']"
+    },
+    {
+      "scenario": "Amount = 2 x max entraînement (39 313)",
+      "attendu": "traitement + alerte",
+      "observé": "traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)",
+      "conforme": true,
+      "détail": "variation moyenne de probabilité 0.0000"
+    },
+    {
+      "scenario": "Amount = 10 x max entraînement (196 565)",
+      "attendu": "traitement + alerte",
+      "observé": "traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)",
+      "conforme": true,
+      "détail": "variation moyenne de probabilité 0.0000"
+    },
+    {
+      "scenario": "Amount = 1000 x max entraînement (19 656 530)",
+      "attendu": "traitement + alerte",
+      "observé": "traité, 100% alertés, taux de signalement 0.14% (référence 0.14%)",
+      "conforme": true,
+      "détail": "variation moyenne de probabilité 0.0000"
+    },
+    {
+      "scenario": "Dérive simulée (+0,5 sigma sur V10, V12, V14)",
+      "attendu": "alerte de dérive (PSI > 0,20)",
+      "observé": "alerte sur ['V10', 'V14', 'V12']",
+      "conforme": true,
+      "détail": "rappel -0.032, précision +0.040, FPR -0.00007"
+    },
+    {
+      "scenario": "Dérive naturelle jour 1 vs jour 2 (Time < 86 400 s)",
+      "attendu": "surveillance (PSI)",
+      "observé": "11 variables en alerte ; V1 PSI=1.57, V3 PSI=1.43, V28 PSI=1.05",
+      "conforme": true,
+      "détail": "Time exclu : sa dérive est structurelle (compteur croissant)"
+    },
+    {
+      "scenario": "Colonne absente (V20)",
+      "attendu": "rejet",
+      "observé": "rejeté (1 anomalie(s))",
+      "conforme": true,
+      "détail": ""
+    },
+    {
+      "scenario": "Colonne renommée (amount)",
+      "attendu": "rejet",
+      "observé": "rejeté (1 anomalie(s))",
+      "conforme": true,
+      "détail": ""
+    },
+    {
+      "scenario": "Colonne dupliquée (V1)",
+      "attendu": "rejet",
+      "observé": "rejeté (1 anomalie(s))",
+      "conforme": true,
+      "détail": ""
+    },
+    {
+      "scenario": "Lot vide",
+      "attendu": "rejet",
+      "observé": "rejeté (1 anomalie(s))",
+      "conforme": true,
+      "détail": ""
+    },
+    {
+      "scenario": "Colonnes dans un ordre différent",
+      "attendu": "traitement (réordonnancement)",
+      "observé": "traité",
+      "conforme": true,
+      "détail": ""
+    }
+  ],
+  "sensitivity": [
+    {
+      "perturbation": "Bruit gaussien V1 à V28, sigma = 1% de l'écart type",
+      "mean_abs_dproba": 8.269026162368011e-06,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.14804305283757338,
+      "flip_rate": 0.0,
+      "n_flips": 0,
+      "n_flips_fraud": 0,
+      "n_invalid": 0,
+      "delta_recall": 0.0,
+      "delta_precision": 0.0,
+      "delta_fpr": 0.0
+    },
+    {
+      "perturbation": "Bruit gaussien V1 à V28, sigma = 5% de l'écart type",
+      "mean_abs_dproba": 6.843173514514509e-05,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.9,
+      "flip_rate": 5.28671624431678e-05,
+      "n_flips": 3,
+      "n_flips_fraud": 1,
+      "n_invalid": 0,
+      "delta_recall": -0.010526315789473717,
+      "delta_precision": -0.02258355916892507,
+      "delta_fpr": 3.5303878131012686e-05
+    },
+    {
+      "perturbation": "Bruit gaussien V1 à V28, sigma = 10% de l'écart type",
+      "mean_abs_dproba": 0.00010526630648238249,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.9,
+      "flip_rate": 7.048954992422373e-05,
+      "n_flips": 4,
+      "n_flips_fraud": 1,
+      "n_invalid": 0,
+      "delta_recall": -0.010526315789473717,
+      "delta_precision": -0.03257474341811695,
+      "delta_fpr": 5.295581719651907e-05
+    },
+    {
+      "perturbation": "Bruit gaussien V1 à V28, sigma = 25% de l'écart type",
+      "mean_abs_dproba": 0.0001739500780833183,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.9980430528375734,
+      "flip_rate": 8.811193740527967e-05,
+      "n_flips": 5,
+      "n_flips_fraud": 2,
+      "n_invalid": 0,
+      "delta_recall": 0.0,
+      "delta_precision": -0.030423280423280463,
+      "delta_fpr": 5.295581719651907e-05
+    },
+    {
+      "perturbation": "Amount multiplié par U(1 ± 1%)",
+      "mean_abs_dproba": 0.0,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.0,
+      "flip_rate": 0.0,
+      "n_flips": 0,
+      "n_flips_fraud": 0,
+      "n_invalid": 0,
+      "delta_recall": 0.0,
+      "delta_precision": 0.0,
+      "delta_fpr": 0.0
+    },
+    {
+      "perturbation": "Amount multiplié par U(1 ± 5%)",
+      "mean_abs_dproba": 0.0,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.0,
+      "flip_rate": 0.0,
+      "n_flips": 0,
+      "n_flips_fraud": 0,
+      "n_invalid": 0,
+      "delta_recall": 0.0,
+      "delta_precision": 0.0,
+      "delta_fpr": 0.0
+    },
+    {
+      "perturbation": "Amount multiplié par U(1 ± 20%)",
+      "mean_abs_dproba": 0.0,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.0,
+      "flip_rate": 0.0,
+      "n_flips": 0,
+      "n_flips_fraud": 0,
+      "n_invalid": 0,
+      "delta_recall": 0.0,
+      "delta_precision": 0.0,
+      "delta_fpr": 0.0
+    },
+    {
+      "perturbation": "Time décalé de +60 s",
+      "mean_abs_dproba": 0.0,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.0,
+      "flip_rate": 0.0,
+      "n_flips": 0,
+      "n_flips_fraud": 0,
+      "n_invalid": 0,
+      "delta_recall": 0.0,
+      "delta_precision": 0.0,
+      "delta_fpr": 0.0
+    },
+    {
+      "perturbation": "Time décalé de +3600 s",
+      "mean_abs_dproba": 1.4979029358897542e-05,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.85,
+      "flip_rate": 1.7622387481055934e-05,
+      "n_flips": 1,
+      "n_flips_fraud": 0,
+      "n_invalid": 0,
+      "delta_recall": 0.0,
+      "delta_precision": -0.010388437217705548,
+      "delta_fpr": 1.7651939065506356e-05
+    },
+    {
+      "perturbation": "Décalage de +0,5 écart type sur V10, V12, V14",
+      "mean_abs_dproba": 0.00013547905128217605,
+      "p95_abs_dproba": 0.0,
+      "max_abs_dproba": 0.8484848484848485,
+      "flip_rate": 0.00012335671236739153,
+      "n_flips": 7,
+      "n_flips_fraud": 3,
+      "n_invalid": 0,
+      "delta_recall": -0.03157894736842104,
+      "delta_precision": 0.040040040040040026,
+      "delta_fpr": -7.060775626202537e-05
+    }
+  ]
+}
