@@ -4,7 +4,7 @@ Ce rapport couvre la partie III du sujet : mesure des performances, comparaison 
 
 ## 1. Données utilisées
 
-Le fichier Kaggle contient 284 807 transactions, dont 492 fraudes. Avant toute chose, nous avons retiré 1 081 lignes strictement identiques à une autre ligne, parmi lesquelles 19 fraudes. Ce nettoyage n'est pas un détail : une transaction présente à la fois dans l'entraînement et dans le test serait « reconnue » par le modèle plutôt que réellement détectée, ce qui gonflerait les résultats. Il reste 283 726 transactions et 473 fraudes, soit un taux de fraude de 0,167 %.
+Le fichier Kaggle contient 284 807 transactions, dont 492 fraudes. Avant toute chose, j'ai retiré 1 081 lignes strictement identiques à une autre ligne, parmi lesquelles 19 fraudes. Ce nettoyage n'est pas un détail : une transaction présente à la fois dans l'entraînement et dans le test serait « reconnue » par le modèle plutôt que réellement détectée, ce qui gonflerait les résultats. Il reste 283 726 transactions et 473 fraudes, soit un taux de fraude de 0,167 %.
 
 La partition est stratifiée et fixée par la graine 42 :
 
@@ -72,7 +72,7 @@ En zoomant sur la zone qui compte pour la banque (FPR inférieur à 1 %), on voi
 
 ## 5. Pourquoi l'accuracy ne dit presque rien
 
-Un « modèle » qui déclarerait toutes les transactions normales obtiendrait 99,833 % d'accuracy sur ce test, sans détecter une seule fraude. Notre arbre atteint 99,933 %. L'écart entre un outil inutile et un outil qui arrête près des trois quarts des fraudes tient donc dans le dixième de point. La raison est simple : l'accuracy est dominée par les 56 651 transactions normales, et les 95 fraudes y pèsent moins de 0,2 %. Le test unitaire `test_high_accuracy_can_hide_zero_recall` reproduit ce piège sur un exemple contrôlé. C'est pourquoi l'accuracy figure dans nos tableaux à titre informatif, sans jamais intervenir dans une décision.
+Un « modèle » qui déclarerait toutes les transactions normales obtiendrait 99,833 % d'accuracy sur ce test, sans détecter une seule fraude. Mon arbre atteint 99,933 %. L'écart entre un outil inutile et un outil qui arrête près des trois quarts des fraudes tient donc dans le dixième de point. La raison est simple : l'accuracy est dominée par les 56 651 transactions normales, et les 95 fraudes y pèsent moins de 0,2 %. Le test unitaire `test_high_accuracy_can_hide_zero_recall` reproduit ce piège sur un exemple contrôlé. C'est pourquoi l'accuracy figure dans mes tableaux à titre informatif, sans jamais intervenir dans une décision.
 
 ## 6. Le seuil et ses compromis
 
@@ -100,7 +100,7 @@ Ces fraudes manquées portent surtout sur de petits montants (médiane de 3,78 �
 
 **Les faux positifs.** Les 12 transactions légitimes bloquées par l'arbre obtiennent des scores élevés (médiane 0,69) et portent sur de petits montants (médiane 5,50 €). Elles tombent dans les mêmes feuilles que des fraudes avérées. Côté client, un blocage sur un achat de quelques euros reste gênant, mais il se résout en général par une simple confirmation. Les faux positifs de la régression logistique concernent des montants plus élevés (médiane 90 €), donc plus irritants pour le client.
 
-**Ce que le modèle regarde.** Les importances de l'arbre sont très concentrées : V17 pèse 70 % des décisions, V14 et V10 environ 11 % chacune, V26 5 % et `Time` 2 %. Le montant ne joue aucun rôle (importance nulle). Nous ne cherchons pas à donner un sens métier à V17 ou V14, ce sont des composantes PCA anonymisées. Deux constats restent néanmoins exploitables pour la qualification. D'une part, un modèle qui ignore totalement le montant ne peut pas prioriser les alertes à fort enjeu. D'autre part, l'usage de `Time` pose problème, car cette variable compte les secondes écoulées depuis le début du jeu Kaggle et n'a aucune signification stable en production. Ces deux points sont repris comme anomalies dans le rapport final.
+**Ce que le modèle regarde.** Les importances de l'arbre sont très concentrées : V17 pèse 70 % des décisions, V14 et V10 environ 11 % chacune, V26 5 % et `Time` 2 %. Le montant ne joue aucun rôle (importance nulle). Je ne cherche pas à donner un sens métier à V17 ou V14, ce sont des composantes PCA anonymisées. Deux constats restent néanmoins exploitables pour la qualification. D'une part, un modèle qui ignore totalement le montant ne peut pas prioriser les alertes à fort enjeu. D'autre part, l'usage de `Time` pose problème, car cette variable compte les secondes écoulées depuis le début du jeu Kaggle et n'a aucune signification stable en production. Ces deux points sont repris comme anomalies dans le rapport final.
 
 ## 8. Surapprentissage et généralisation
 
@@ -111,7 +111,7 @@ Ces fraudes manquées portent surtout sur de petits montants (médiane de 3,78 �
 
 L'arbre ne montre pas de surapprentissage classique : il fait aussi bien en validation qu'en entraînement, ce que la profondeur limitée à 6 et les 20 observations minimum par feuille expliquent. La baisse sur le test vient plutôt de deux effets cumulés. Le premier est l'aléa d'échantillonnage : avec moins de 100 fraudes par jeu, quelques fraudes « difficiles » de plus ou de moins font bouger la PR-AUC de plusieurs points. Le second est un léger optimisme de la validation : comme le modèle et le seuil ont été choisis pour y être les meilleurs, la validation surestime mécaniquement la performance. Le rappel passe ainsi de 0,851 en validation à 0,726 en test, alors que le seuil n'a pas changé.
 
-Nous avons ajouté un contrôle hors temps, qui n'intervient dans aucune décision : entraînement sur les 60 % de transactions les plus anciennes, seuil sur les 20 % suivantes, test sur les 20 % les plus récentes. On obtient une PR-AUC de 0,699, un rappel de 0,743, une précision de 0,743 et un FPR de 0,034 %. La précision baisse nettement quand on prédit « l'avenir », ce qui est cohérent avec la dérive entre le premier et le second jour décrite dans le rapport de robustesse. Une partition aléatoire, même stratifiée, donne donc une image plus favorable que ce qu'on observerait en exploitation.
+J'ai ajouté un contrôle hors temps, qui n'intervient dans aucune décision : entraînement sur les 60 % de transactions les plus anciennes, seuil sur les 20 % suivantes, test sur les 20 % les plus récentes. On obtient une PR-AUC de 0,699, un rappel de 0,743, une précision de 0,743 et un FPR de 0,034 %. La précision baisse nettement quand on prédit « l'avenir », ce qui est cohérent avec la dérive entre le premier et le second jour décrite dans le rapport de robustesse. Une partition aléatoire, même stratifiée, donne donc une image plus favorable que ce qu'on observerait en exploitation.
 
 ## 9. Confrontation aux critères d'acceptation
 
